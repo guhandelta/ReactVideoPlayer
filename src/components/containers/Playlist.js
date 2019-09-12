@@ -4,11 +4,11 @@ import PlaylistItems from '../containers/PlaylistItems';
 import Nightmode from '../Nightmode';
 import StyledPlaylist from '../styles/StyledPlaylist';
 
-const Playlist = props =>( // {} => are not used as what is returned in oonly JSX
+const Playlist = ({ videos, active, nightModeCallback, nightMode }) => ( // {} => are not used as what is returned in oonly JSX
     <StyledPlaylist>
-        <Nightmode />
-        <PlaylistHeader />
-        <PlaylistItems />
+        <Nightmode nightMode={nightMode} nightModeCallback={nightModeCallback} />
+        <PlaylistHeader active={active} total={videos.length} />
+        <PlaylistItems videos={videos} active={active} />
     </StyledPlaylist>
 )
 
