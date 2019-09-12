@@ -24,7 +24,7 @@ const themeLight = {
     color: "#353535"
 };
 // theme is provided as a prop to the ThemeProvider
-const NgpPlayer = props => {
+const NgpPlayer = ({match,history, location}) => {
 
     const videos = JSON.parse(document.querySelector('[name="videos"]').value);
 
@@ -34,12 +34,45 @@ const NgpPlayer = props => {
         nightMode: true,
         playlistId: videos.playlistId,
         autoplay: false
-    })
+    });
+
+    useEffect(
+        () => {
+            const videoId = match.params.activeVideo;
+            if(videoId !== undefined){
+                const newActiveVideo = state.videos.findIndex(video => video.id === videoId)
+                setState({
+                    ...state, // ... will allow to hold on to the state and add/set new properties
+                    activeVideo: state.videos[newActiveVideo],
+                    autoplay: location.autoplay,
+                }); 
+            }else{
+                history.push({
+                    pathname: `/${state.activeVideo.id}`,
+                    autoplay: false
+                });
+            }
+        },
+        [match.params.activeVideo] 
+        //[history, location.autoplay, match.params.activeVideo, state.activeVideo.id, state.videos]
+    )
 
     const nightModeCallback = () => {
+        setstate({ ...state, nightMode: !state.nightMode});
 
     }
     const endCallback = () => {
+        const videoId = match.params.activeVideo;
+        const currentVideoIndex = state.videos.findIndex(
+            video => video.id === videoId
+        );
+
+        const nextVideo = currentVideoIndex === state.videos.length -1 ? 0 : currentVideoIndex + 1;
+
+        history.push({
+            pathname: `${state.videos[nextVideo].id}`,
+            autoplay: false
+        });
 
     }
     const progressCallback = () => {

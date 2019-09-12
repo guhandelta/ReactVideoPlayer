@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const withLink = WrappedComponent => props => {
     // Take in the props => modify the props => apply the Link fn() to the name
     const newProps = {
-        ...props, // Clone the props
+        ...props, // Clone the props and  ... will allow to add/change properties, without wiping out the old properties
         video:{   // Video Object with all the data abt the video
             ...props.video, // Clone the Video Object
             title: (
